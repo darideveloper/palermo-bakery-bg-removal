@@ -1,0 +1,8 @@
+uploads/
+uploads-no-bg/
+uploads-no-bg-done/
+uploads-backup/
+venv/
+
+
+*.db
