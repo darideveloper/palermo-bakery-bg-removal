@@ -1,3 +1,37 @@
+"""
+Description:
+    This script recursively scans the 'uploads' directory and deletes any images 
+    whose filenames do NOT contain the words "white" or "ivory" (case-insensitive).
+
+How it works:
+    1. Recursively walks through the 'uploads' directory.
+    2. Converts each filename to lowercase.
+    3. Checks if "white" or "ivory" is in the lowercase filename.
+    4. Deletes the file if neither word is found.
+
+Related Folders:
+    - Source/Target: ./uploads
+
+Related Scripts:
+    - remove-images.py (another cleanup script)
+
+Recommended Run Order:
+    - Run this before background removal to save processing time.
+    1. remove-images.py (optional)
+    2. remove-no-white-ivory-cakes.py
+    3. remove-bg.py
+
+Example Input:
+    - 'uploads/2021/pink-cake.jpg' (deleted)
+    - 'uploads/2021/white-wedding-cake.jpg' (kept)
+
+Example Output:
+    Starting cleanup in: .../uploads
+    Deleted: 2021/pink-cake.jpg
+    --- Cleanup Complete ---
+    Files kept (white/ivory): 208
+    Files deleted: 906
+"""
 import os
 
 def cleanup_non_white_ivory_images(root_directory):

@@ -1,3 +1,36 @@
+"""
+Description:
+    This script cleans up images in the 'uploads' directory by deleting any files that are 
+    NOT listed in a provided CSV file ('products.csv') AND do not contain a specific 
+    keyword (e.g., '-scaled') in their filename.
+
+How it works:
+    1. Reads 'products.csv' to extract a list of allowed image paths.
+    2. Recursively walks through the 'uploads' directory.
+    3. Checks if each file's relative path exists in the allowed list or if its filename 
+       contains the required keyword.
+    4. If neither condition is met, the file is deleted.
+
+Related Folders:
+    - Source/Target: ./uploads
+
+Related Scripts:
+    - None directly, but typically run as a preliminary cleanup step before background removal.
+
+Recommended Run Order:
+    1. remove-images.py (optional: clean up unneeded files first)
+    2. remove-no-white-ivory-cakes.py (optional: further filter by cake color)
+    3. remove-bg.py (remove backgrounds)
+
+Example Input:
+    - 'uploads/2021/02/pink-wedding-cake.jpeg' (not in CSV, no '-scaled' -> deleted)
+    - 'uploads/2021/02/cake-scaled.jpeg' (has '-scaled' -> kept)
+
+Example Output:
+    --- Cleanup Complete ---
+    Files kept: 150
+    Files deleted: 500
+"""
 import os
 import csv
 import urllib.parse

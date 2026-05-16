@@ -1,3 +1,37 @@
+"""
+Description:
+    This script processes images in the 'uploads' directory, removes their background 
+    using an AI model (InSPyReNet), and saves the transparent images as PNGs in 
+    the 'uploads-no-bg' directory.
+
+How it works:
+    1. Uses an SQLite database ('processing_status.db') to track completed files, 
+       allowing resumption if interrupted.
+    2. Scans the 'uploads' directory for supported images (.jpg, .jpeg, .png, .webp).
+    3. Uses the `transparent_background` library to remove backgrounds.
+    4. Saves the results as .png files in the 'uploads-no-bg' directory, 
+       replicating the original subfolder structure.
+
+Related Folders:
+    - Source: ./uploads
+    - Output: ./uploads-no-bg
+    - DB: processing_status.db
+
+Related Scripts:
+    - add-white-bg.py (runs after this script to add a white background to the transparent PNGs)
+
+Recommended Run Order:
+    1. Clean up scripts (remove-images.py, remove-no-white-ivory-cakes.py)
+    2. remove-bg.py (This script)
+    3. add-white-bg.py
+    4. remove-scaled-suffix.py
+
+Example Input:
+    - 'uploads/2026/05/cake.jpg' (original image with background)
+
+Example Output:
+    - 'uploads-no-bg/2026/05/cake.png' (transparent background image)
+"""
 import os
 import sqlite3
 import time

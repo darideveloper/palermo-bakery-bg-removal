@@ -1,3 +1,34 @@
+"""
+Description:
+    This script cleans up filenames by removing the '-scaled' suffix from images 
+    in the 'uploads-no-bg-done' directory and saves the renamed files to a new 
+    directory ('uploads-no-bg-done-no-scaled').
+
+How it works:
+    1. Scans 'uploads-no-bg-done' for files whose names end with '-scaled' before the extension.
+    2. Uses an SQLite database ('renaming_status.db') to track processed files.
+    3. Copies the file to 'uploads-no-bg-done-no-scaled' with the '-scaled' suffix removed.
+    4. Replicates the folder structure.
+
+Related Folders:
+    - Source: ./uploads-no-bg-done
+    - Output: ./uploads-no-bg-done-no-scaled
+    - DB: renaming_status.db
+
+Related Scripts:
+    - add-white-bg.py (typically run before this script to generate the finalized images)
+
+Recommended Run Order:
+    1. remove-bg.py
+    2. add-white-bg.py
+    3. remove-scaled-suffix.py (This script)
+
+Example Input:
+    - 'uploads-no-bg-done/2026/05/cake-scaled.jpg'
+
+Example Output:
+    - 'uploads-no-bg-done-no-scaled/2026/05/cake.jpg'
+"""
 import os
 import sqlite3
 import shutil
