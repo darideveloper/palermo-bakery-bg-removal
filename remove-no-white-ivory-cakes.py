@@ -34,6 +34,12 @@ Example Output:
 """
 import os
 
+# Add partial filenames to this list to always keep them (case-insensitive)
+EXCEPTIONS = [
+    "11ExquisiteWhiteWeddingCake",
+    "Screen-Shot-2022-07-11-at-10.54.25-PM",
+]
+
 def cleanup_non_white_ivory_images(root_directory):
     deleted_count = 0
     kept_count = 0
@@ -50,8 +56,11 @@ def cleanup_non_white_ivory_images(root_directory):
             
             filename_lower = filename.lower()
             
-            # Keep if the filename contains "white" or "ivory"
-            if "white" in filename_lower or "ivory" in filename_lower:
+            # Check if filename matches any of the exceptions
+            is_exception = any(exc.lower() in filename_lower for exc in EXCEPTIONS)
+            
+            # Keep if the filename contains "white" or "ivory", or matches an exception
+            if "white" in filename_lower or "ivory" in filename_lower or is_exception:
                 kept_count += 1
             else:
                 try:
