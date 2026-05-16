@@ -91,7 +91,7 @@ def run_processor():
     # 1. Initialize
     db_conn = init_db()
     print("DEBUG: Loading AI Model (InSPyReNet)... this may take a moment.")
-    remover = Remover()
+    remover = Remover(resize='dynamic')
     print("DEBUG: Model loaded successfully.")
 
     # 2. Scan Phase
