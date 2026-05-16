@@ -1,7 +1,8 @@
+#!/usr/bin/env python3
 """
 Description:
-    This script cleans up filenames by removing the '-scaled' suffix from images 
-    in the 'uploads-no-bg-done' directory and saves the renamed files to a new 
+    This script cleans up filenames by removing the '-scaled' suffix from images
+    in the 'uploads-no-bg-done' directory and saves the renamed files to a new
     directory ('uploads-no-bg-done-no-scaled').
 
 How it works:
@@ -36,10 +37,11 @@ from pathlib import Path
 from tqdm import tqdm
 
 # --- CONFIGURATION ---
-CURRENT_PATH = Path(os.path.dirname(os.path.abspath(__file__)))
+CURRENT_PATH = Path(os.path.dirname(os.path.abspath(__file__))).parent
 SOURCE_DIR = CURRENT_PATH / "uploads-no-bg-done"
 OUTPUT_DIR = CURRENT_PATH / "uploads-no-bg-done-no-scaled"
 DB_NAME = "renaming_status.db"
+
 
 def init_db():
     """Initializes the SQLite database for tracking processed files."""
@@ -57,6 +59,7 @@ def init_db():
     conn.commit()
     return conn
 
+
 def is_processed(conn, file_path):
     """Checks if a file has already been processed."""
     cursor = conn.cursor()
@@ -66,6 +69,7 @@ def is_processed(conn, file_path):
     result = cursor.fetchone()
     return result is not None and result[0] == "completed"
 
+
 def mark_as_done(conn, file_path):
     """Marks a file as processed in the database."""
     cursor = conn.cursor()
@@ -74,6 +78,7 @@ def mark_as_done(conn, file_path):
         (str(file_path), "completed"),
     )
     conn.commit()
+
 
 def run_renamer():
     print("--- 🏷️ Starting Scaled Suffix Removal Script ---")
@@ -92,7 +97,7 @@ def run_renamer():
     for root, _, files in os.walk(SOURCE_DIR):
         for file in files:
             input_path = Path(root) / file
-            
+
             # Identify files with -scaled suffix before extension
             # e.g., image-scaled.jpeg -> stem is 'image-scaled', suffix is '.jpeg'
             if input_path.stem.lower().endswith("-scaled"):
@@ -113,12 +118,12 @@ def run_renamer():
         try:
             # Replicate path structure
             relative_path = input_path.relative_to(SOURCE_DIR)
-            
+
             # Remove '-scaled' from the stem
             # stem: 'image-scaled' -> new_stem: 'image'
-            new_stem = input_path.stem[:-7] # len("-scaled") == 7
+            new_stem = input_path.stem[:-7]  # len("-scaled") == 7
             new_filename = new_stem + input_path.suffix
-            
+
             output_path = OUTPUT_DIR / relative_path.parent / new_filename
 
             # Ensure output directory exists
@@ -129,7 +134,7 @@ def run_renamer():
 
             # Record success
             mark_as_done(db_conn, input_path)
-            
+
             # tqdm.write(f"✅ Renamed: {relative_path.name} -> {new_filename}")
 
         except Exception as e:
@@ -138,6 +143,7 @@ def run_renamer():
 
     db_conn.close()
     print("\n--- ✅ All tasks finished ---")
+
 
 if __name__ == "__main__":
     run_renamer()

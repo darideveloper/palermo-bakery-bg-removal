@@ -22,16 +22,17 @@ An automated image processing pipeline designed to clean up and standardize a Wo
 - **Feedback**: Use `tqdm` for all long-running processes, preferring `tqdm.write` for logs to avoid bar flicker.
 
 ### Architecture Patterns
-- **Stateful Processing**: Uses local SQLite databases (`processing_status.db`, `finalizing_status.db`) to allow for resumable pipelines and to avoid redundant processing of already completed files.
+- **Stateful Processing**: Uses local SQLite databases (`processing_status.db`, `finalizing_status.db`, `renaming_status.db`) to allow for resumable pipelines and to avoid redundant processing of already completed files.
 - **Staged Pipeline**: 
   1. Background Removal (`uploads` -> `uploads-no-bg`)
   2. Background Restoration (`uploads-no-bg` -> `uploads-no-bg-done`)
-  3. Cleanup (`uploads` folder based on `products.csv`)
+  3. Scaled Suffix Removal (`uploads-no-bg-done` -> `uploads-no-bg-done-no-scaled`)
+  4. Cleanup (`uploads` folder based on `products.csv`)
 - **Structure-Preserving**: Replicates the source directory's tree structure (`YYYY/MM/filename`) in all output directories.
 
 ### Testing Strategy
-- **Manual Verification**: Visual check of output images in the `uploads-no-bg-done` directory.
-- **Status Checks**: Querying the `.db` files to ensure all tasks are marked as "completed".
+- **Manual Verification**: Visual check of output images in the `uploads-no-bg-done` and `uploads-no-bg-done-no-scaled` directories.
+- **Status Checks**: Querying the `.db` files (`processing_status.db`, `finalizing_status.db`, `renaming_status.db`) to ensure all tasks are marked as "completed".
 
 ### Git Workflow
 - **Conventional Commits**: (e.g., `feat(bg-removal): integrate InSPyReNet model`).

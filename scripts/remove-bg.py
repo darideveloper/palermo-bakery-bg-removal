@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 """
 Description:
     This script processes images in the 'uploads' directory, removes their background 
@@ -41,7 +42,7 @@ from PIL import Image
 from tqdm import tqdm
 
 # --- CONFIGURATION ---
-CURRENT_PATH = os.path.dirname(os.path.abspath(__file__))
+CURRENT_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Note: Using Path objects for better cross-platform compatibility
 SOURCE_DIR = Path(CURRENT_PATH) / "uploads"
 OUTPUT_DIR = Path(CURRENT_PATH) / "uploads-no-bg"

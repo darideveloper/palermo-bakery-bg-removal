@@ -1,13 +1,14 @@
+#!/usr/bin/env python3
 """
 Description:
-    This script cleans up images in the 'uploads' directory by deleting any files that are 
-    NOT listed in a provided CSV file ('products.csv') AND do not contain a specific 
+    This script cleans up images in the 'uploads' directory by deleting any files that are
+    NOT listed in a provided CSV file ('products.csv') AND do not contain a specific
     keyword (e.g., '-scaled') in their filename.
 
 How it works:
     1. Reads 'products.csv' to extract a list of allowed image paths.
     2. Recursively walks through the 'uploads' directory.
-    3. Checks if each file's relative path exists in the allowed list or if its filename 
+    3. Checks if each file's relative path exists in the allowed list or if its filename
        contains the required keyword.
     4. If neither condition is met, the file is deleted.
 
@@ -109,7 +110,7 @@ def cleanup_images(root_directory, allowed_paths, keyword_to_keep):
 
 
 # --- SETUP ---
-current_folder = os.path.dirname(os.path.abspath(__file__))
+current_folder = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 csv_file = os.path.join(current_folder, "products.csv")
 target_folder = os.path.join(current_folder, "uploads")
 required_keyword = "-scaled"  # We still check for this as a safeguard

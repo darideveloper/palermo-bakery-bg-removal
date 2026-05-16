@@ -1,6 +1,7 @@
+#!/usr/bin/env python3
 """
 Description:
-    This script recursively scans the 'uploads' directory and deletes any images 
+    This script recursively scans the 'uploads' directory and deletes any images
     whose filenames do NOT contain the words "white" or "ivory" (case-insensitive).
 
 How it works:
@@ -32,13 +33,16 @@ Example Output:
     Files kept (white/ivory): 208
     Files deleted: 906
 """
+
 import os
 
 # Add partial filenames to this list to always keep them (case-insensitive)
 EXCEPTIONS = [
     "11ExquisiteWhiteWeddingCake",
     "Screen-Shot-2022-07-11-at-10.54.25-PM",
+    "WPindots",
 ]
+
 
 def cleanup_non_white_ivory_images(root_directory):
     deleted_count = 0
@@ -53,12 +57,12 @@ def cleanup_non_white_ivory_images(root_directory):
         for filename in files:
             full_path = os.path.join(root, filename)
             rel_path = os.path.relpath(full_path, root_directory)
-            
+
             filename_lower = filename.lower()
-            
+
             # Check if filename matches any of the exceptions
             is_exception = any(exc.lower() in filename_lower for exc in EXCEPTIONS)
-            
+
             # Keep if the filename contains "white" or "ivory", or matches an exception
             if "white" in filename_lower or "ivory" in filename_lower or is_exception:
                 kept_count += 1
@@ -74,9 +78,10 @@ def cleanup_non_white_ivory_images(root_directory):
     print(f"Files kept (white/ivory): {kept_count}")
     print(f"Files deleted: {deleted_count}")
 
+
 if __name__ == "__main__":
-    current_folder = os.path.dirname(os.path.abspath(__file__))
+    current_folder = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     target_folder = os.path.join(current_folder, "uploads")
-    
+
     print(f"Starting cleanup in: {target_folder}\n")
     cleanup_non_white_ivory_images(target_folder)
